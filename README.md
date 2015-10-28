@@ -3,11 +3,9 @@ Tweak battles tweak
 
 #To do
 - Add Album Art
-<br>
 - Mini View
-<br>
-- Swipe gestures
-<br>
+- Swipe gestures (Swipe left for previous, swipe right for next). 
 - Download all songs for offline button
-<br>
 - Slide up menu
+- Add Blur (Code is there, cant figure it out with preferences)
+- Make Preference Bundle
