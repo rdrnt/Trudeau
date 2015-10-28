@@ -6,7 +6,7 @@
 #import "MediaRemote.h"
 #import <UIKit/UIKit.h>
 
-static UIImage *artwork;
+#import "trudeau.h"
 
 @interface MusicMiniPlayerViewController : UIViewController  {
 
@@ -23,13 +23,16 @@ static UIImage *artwork;
 
 
 %hook MusicMiniPlayerViewController
+
+
 - (void)viewDidLoad {
     %orig;
-    HBLogInfo(@"HI mom!!!");
-    UISwipeGestureRecognizer *swipeLeft;
-    UISwipeGestureRecognizer *swipeRight;
+    /* Frame info 
+    float frameHeight = [self view].frame.size.height;
+    float frameWidth = [self view].frame.size.width;
+    */
 
-
+    //Add Swipes
     swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextTrack)];
     swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
     swipeLeft.numberOfTouchesRequired = 1;
@@ -40,13 +43,28 @@ static UIImage *artwork;
     swipeRight.numberOfTouchesRequired = 1;
     [[self view] addGestureRecognizer:swipeRight];
 
-    /*
-    SBMediaController *mc = [%c(MPMusicPlayerController) sharedInstance];
-    HBLogInfo(@"The current info is %@", [mc _nowPlayingInfo]);
-    */
-    MPUSystemMediaControlsViewController *mediaControlsViewController=[[MPUSystemMediaControlsViewController alloc] initWithStyle:1];
-    UIImageView *artwork=[mediaControlsViewController artworkView];
+    swipeUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(viewDidDisappear)];
+    swipeUp.direction = UISwipeGestureRecognizerDirectionDown;
+    swipeUp.numberOfTouchesRequired = 1;
+    [[self view] addGestureRecognizer:swipeUp];
 
+    //Blur Effect 
+    /*
+    if (lightblur == YES) {
+    effectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+    effectView.alpha = 0.4;
+    effectView.opaque = YES;
+    effectView.frame = CGRectMake(0,0,frameWidth,frameHeight);
+    [[self view] addSubview:effectView];
+    }
+    else if {
+        effectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
+        effectView.alpha = 0.4;
+        effectView.opaque = YES;
+        effectView.frame = CGRectMake(0,0,frameWidth,frameHeight);
+        [[self view] addSubview:effectView];
+    }
+    */
 
 
 
@@ -57,15 +75,14 @@ static UIImage *artwork;
     MPMusicPlayerController *playerC = [[[%c(MPMusicPlayerController) alloc] init] autorelease];
     [playerC skipToNextItem];
     HBLogInfo(@"Skipping...");
-
+    /*
      MRMediaRemoteGetNowPlayingInfo(dispatch_get_main_queue(), ^(CFDictionaryRef information) {
     NSDictionary *dict=(__bridge NSDictionary *)(information);
-
-//then the piece above 
-NSData *artworkData = [dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoArtworkData];
-artwork = [UIImage imageWithData:artworkData];
-[self view].backgroundColor = [UIColor colorWithPatternImage:artwork];
-});
+    NSData *artworkData = [dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoArtworkData];
+    artwork = [UIImage imageWithData:artworkData];
+    [self view].backgroundColor = [UIColor colorWithPatternImage:artwork];
+    });
+    */
 
 }
 
@@ -78,3 +95,17 @@ artwork = [UIImage imageWithData:artworkData];
     [self viewDidLoad];
 }
 %end
+
+static void loadPreferences() {
+    lightblur= !CFPreferencesCopyAppValue(CFSTR("lightblur"), CFSTR("com.rdrnt.trudeau")) ? YES : [(id)CFPreferencesCopyAppValue(CFSTR("lightblur"), CFSTR("com.rdrnt.trudeau")) boolValue];
+}
+
+%ctor {
+    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
+                                NULL,
+                                (CFNotificationCallback)loadPreferences,
+                                CFSTR("com.rdrnt.trudeau/settingschanged"),
+                                NULL,
+                                CFNotificationSuspensionBehaviorDeliverImmediately);
+    loadPreferences();
+}
