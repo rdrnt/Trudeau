@@ -2,7 +2,7 @@ include /opt/theos/makefiles/common.mk
 
 TWEAK_NAME = Trudeau
 Trudeau_FILES = Tweak.xm
-Trudeau_PRIVATE_FRAMEWORKS  = MediaRemote SafariServices
+Trudeau_PRIVATE_FRAMEWORKS  = MediaRemote SafariServices QuartzCore
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 

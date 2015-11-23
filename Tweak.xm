@@ -11,28 +11,17 @@
 
 @interface MusicMiniPlayerViewController : UIViewController  {
 }
-- (void)viewDidLoad;
+-(void)viewDidLoad;
 -(void)nextTrack;
 -(void)previousTrack;
 @end
 
-@interface MPUSystemMediaControlsViewController : UIViewController {
-}
-@property (nonatomic, readonly) UIView *artworkView;
-@end
-
-
 %hook MusicMiniPlayerViewController
-
-
 - (void)viewDidLoad {
     %orig;
 
     HBLogInfo(@"TRUDEAU: Loaded!");
-    /* Frame info 
-    float frameHeight = [self view].frame.size.height;
-    float frameWidth = [self view].frame.size.width;
-    */
+
 
     //Add Swipes
     swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextTrack)];
@@ -44,13 +33,6 @@
     swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
     swipeRight.numberOfTouchesRequired = 1;
     [[self view] addGestureRecognizer:swipeRight];
-
-    lyricsButton = [[UIButton alloc] initWithFrame:CGRectMake(0,13, 9, 20)];
-    lyricsButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [lyricsButton setTitle:@"testing" forState:UIControlStateNormal];
-    lyricsButton.titleLabel.textColor = [UIColor blueColor];
-    [lyricsButton addTarget:self action:@selector(openLyrics) forControlEvents:UIControlEventTouchUpInside];
-    [[self view] addSubview:lyricsButton];
 
     //Blur Effect 
     /*
@@ -79,6 +61,8 @@
     MPMusicPlayerController *playerC = [[[%c(MPMusicPlayerController) alloc] init] autorelease];
     [playerC skipToNextItem];
     HBLogInfo(@"Skipping...");
+
+
     /*
      MRMediaRemoteGetNowPlayingInfo(dispatch_get_main_queue(), ^(CFDictionaryRef information) {
     NSDictionary *dict=(__bridge NSDictionary *)(information);
@@ -105,6 +89,29 @@
     [self presentViewController:sfVC animated:YES completion:nil];
 }
 
+%end
+
+
+@interface MPUTransportControlsView : UIView {
+    
+}
+-(void)layoutSubviews;
+@end
+
+%hook MPUTransportControlsView
+-(void)layoutSubviews {
+    %orig;
+    lyricsButton = [[UIButton alloc] init];
+    [lyricsButton.layer setFrame:CGRectMake(5, 5, 30, 30)];
+    [lyricsButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    lyricsButton.hidden = NO;
+    lyricsButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [lyricsButton setTitle:@"testing" forState:UIControlStateNormal];
+    lyricsButton.titleLabel.textColor = [UIColor blueColor];
+    [lyricsButton addTarget:self action:@selector(openLyrics) forControlEvents:UIControlEventTouchUpInside];
+    //[[self view] addSubview:lyricsButton];
+    HBLogInfo(@"Button is loaded... %@", lyricsButton);
+}
 %end
 
 static void loadPreferences() {
