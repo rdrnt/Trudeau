@@ -5,11 +5,11 @@
 #import <SpringBoard/SpringBoard.h>
 #import "MediaRemote.h"
 #import <UIKit/UIKit.h>
+#import <SafariServices/SafariServices.h>
 
 #import "trudeau.h"
 
 @interface MusicMiniPlayerViewController : UIViewController  {
-
 }
 - (void)viewDidLoad;
 -(void)nextTrack;
@@ -27,6 +27,8 @@
 
 - (void)viewDidLoad {
     %orig;
+
+    HBLogInfo(@"TRUDEAU: Loaded!");
     /* Frame info 
     float frameHeight = [self view].frame.size.height;
     float frameWidth = [self view].frame.size.width;
@@ -43,10 +45,12 @@
     swipeRight.numberOfTouchesRequired = 1;
     [[self view] addGestureRecognizer:swipeRight];
 
-    swipeUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(viewDidDisappear)];
-    swipeUp.direction = UISwipeGestureRecognizerDirectionDown;
-    swipeUp.numberOfTouchesRequired = 1;
-    [[self view] addGestureRecognizer:swipeUp];
+    lyricsButton = [[UIButton alloc] initWithFrame:CGRectMake(0,13, 9, 20)];
+    lyricsButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [lyricsButton setTitle:@"testing" forState:UIControlStateNormal];
+    lyricsButton.titleLabel.textColor = [UIColor blueColor];
+    [lyricsButton addTarget:self action:@selector(openLyrics) forControlEvents:UIControlEventTouchUpInside];
+    [[self view] addSubview:lyricsButton];
 
     //Blur Effect 
     /*
@@ -92,8 +96,15 @@
     [playerC skipToPreviousItem];
     HBLogInfo(@"Go back...");
 
-    [self viewDidLoad];
 }
+
+%new
+-(void)openLyrics {
+    HBLogInfo(@"Attempting to launch SafariVC...");
+    SFSafariViewController *sfVC = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:@"https://google.ca"] entersReaderIfAvailable:NO];
+    [self presentViewController:sfVC animated:YES completion:nil];
+}
+
 %end
 
 static void loadPreferences() {

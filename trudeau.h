@@ -1,6 +1,9 @@
     UISwipeGestureRecognizer *swipeLeft;
     UISwipeGestureRecognizer *swipeRight;
-    UISwipeGestureRecognizer *swipeUp;
+   
+
+   //Lyrics button
+    UIButton *lyricsButton;
 
     //blur
     UIVisualEffectView *effectView;
