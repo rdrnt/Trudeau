@@ -9,6 +9,10 @@
 
 #import "trudeau.h"
 
+@interface UIColor (Priv)
++(UIColor*)systemPinkColor;
+@end
+
 @interface MusicMiniPlayerViewController : UIViewController  {
 }
 -(void)viewDidLoad;
@@ -33,6 +37,14 @@
     swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
     swipeRight.numberOfTouchesRequired = 1;
     [[self view] addGestureRecognizer:swipeRight];
+
+    UIButton *lyricsButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [lyricsButton addTarget:self action:@selector(openLyrics) forControlEvents:UIControlEventTouchUpInside];
+    [lyricsButton setTitle:@"Lyrics" forState:UIControlStateNormal];
+    CGSize sizeForButtonString = [@"Lyrics" sizeWithFont:lyricsButton.titleLabel.font]; 
+    [lyricsButton setFrame:CGRectMake(10,0, sizeForButtonString.width, sizeForButtonString.height)];
+    [lyricsButton setTitleColor:[UIColor systemPinkColor] forState:UIControlStateNormal]; //systemPinkColor is the music tint color 
+    [[self view] addSubview:lyricsButton];
 
     //Blur Effect 
     /*
@@ -97,22 +109,6 @@
 }
 -(void)layoutSubviews;
 @end
-
-%hook MPUTransportControlsView
--(void)layoutSubviews {
-    %orig;
-    lyricsButton = [[UIButton alloc] init];
-    [lyricsButton.layer setFrame:CGRectMake(5, 5, 30, 30)];
-    [lyricsButton setTranslatesAutoresizingMaskIntoConstraints:NO];
-    lyricsButton.hidden = NO;
-    lyricsButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [lyricsButton setTitle:@"testing" forState:UIControlStateNormal];
-    lyricsButton.titleLabel.textColor = [UIColor blueColor];
-    [lyricsButton addTarget:self action:@selector(openLyrics) forControlEvents:UIControlEventTouchUpInside];
-    //[[self view] addSubview:lyricsButton];
-    HBLogInfo(@"Button is loaded... %@", lyricsButton);
-}
-%end
 
 static void loadPreferences() {
     lightblur= !CFPreferencesCopyAppValue(CFSTR("lightblur"), CFSTR("com.rdrnt.trudeau")) ? YES : [(id)CFPreferencesCopyAppValue(CFSTR("lightblur"), CFSTR("com.rdrnt.trudeau")) boolValue];
