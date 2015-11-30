@@ -1,17 +1,17 @@
 #import "MediaPlayer/MPMusicPlayerController.h"
-#include <MediaPlayer/MediaPlayer.h>
-#import "MediaRemote/MediaRemote.h"
 #import <Foundation/Foundation.h>
 #import <SpringBoard/SpringBoard.h>
 #import "MediaRemote.h"
 #import <UIKit/UIKit.h>
 #import <SafariServices/SafariServices.h>
-
 #import "trudeau.h"
 
 @interface UIColor (Priv)
-+(UIColor*)systemPinkColor;
++(UIColor *)systemPinkColor;
 @end
+
+//Global variable for playing/pausing
+MPMusicPlayerController *playerC = [[[%c(MPMusicPlayerController) alloc] init] autorelease];
 
 @interface MusicMiniPlayerViewController : UIViewController  {
 }
@@ -20,14 +20,13 @@
 -(void)previousTrack;
 @end
 
+//Hooking the mini player bar in music.app
 %hook MusicMiniPlayerViewController
 - (void)viewDidLoad {
+    //%orig so view doesnt mess up
     %orig;
 
-    HBLogInfo(@"TRUDEAU: Loaded!");
-
-
-    //Add Swipes
+    //Add Swipes to the view
     swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextTrack)];
     swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
     swipeLeft.numberOfTouchesRequired = 1;
@@ -37,32 +36,11 @@
     swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
     swipeRight.numberOfTouchesRequired = 1;
     [[self view] addGestureRecognizer:swipeRight];
-
-    //Blur Effect 
-    /*
-    if (lightblur == YES) {
-    effectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
-    effectView.alpha = 0.4;
-    effectView.opaque = YES;
-    effectView.frame = CGRectMake(0,0,frameWidth,frameHeight);
-    [[self view] addSubview:effectView];
-    }
-    else if {
-        effectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
-        effectView.alpha = 0.4;
-        effectView.opaque = YES;
-        effectView.frame = CGRectMake(0,0,frameWidth,frameHeight);
-        [[self view] addSubview:effectView];
-    }
-    */
-
-
-
 }
 
 %new
 -(void)nextTrack {
-    MPMusicPlayerController *playerC = [[[%c(MPMusicPlayerController) alloc] init] autorelease];
+    //Using the MPMusicPlayerController class method "skipToNextItem" to skip songs.
     [playerC skipToNextItem];
     HBLogInfo(@"Skipping...");
 
@@ -70,7 +48,7 @@
 
 %new 
 -(void)previousTrack {
-    MPMusicPlayerController *playerC = [[[%c(MPMusicPlayerController) alloc] init] autorelease];
+    //Using the MPMusicPlayerController class method "skipToPreviousItem" to skip songs.
     [playerC skipToPreviousItem];
     HBLogInfo(@"Go back...");
 
@@ -104,31 +82,32 @@
     HBLogInfo(@"Grabbing the title");
 
     //grabing Song and artist
-     MRMediaRemoteGetNowPlayingInfo(dispatch_get_main_queue(), ^(CFDictionaryRef information) {
-        NSDictionary *dict=(__bridge NSDictionary *)(information);
-        NSString *tempSongLabel = [[NSString alloc] initWithString:[dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoTitle] ];
-        NSString *tempArtistLabel = [[NSString alloc] initWithString:[dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoArtist] ];
-        HBLogInfo(@"The song is %@ by %@", tempSongLabel, tempArtistLabel);
+        MRMediaRemoteGetNowPlayingInfo(dispatch_get_main_queue(), ^(CFDictionaryRef information) {
+            NSDictionary *dict=(__bridge NSDictionary *)(information);
+            NSString *tempSongLabel = [[NSString alloc] initWithString:[dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoTitle] ];
+            NSString *tempArtistLabel = [[NSString alloc] initWithString:[dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoArtist] ];
+            HBLogInfo(@"The song is %@ by %@", tempSongLabel, tempArtistLabel);
 
-        //Replacing " " in songs and artist, so we can google search properly
-        NSString *songLabel = [tempSongLabel stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-        HBLogInfo(@"The new song for searching lyrics is %@", songLabel);
-        NSString *artistLabel = [tempArtistLabel stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-        HBLogInfo(@"The new song for searching lyrics is %@", artistLabel);
+            //Replacing " " in songs and artist, so we can google search properly
+            NSString *songLabel = [tempSongLabel stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+            HBLogInfo(@"The new song for searching lyrics is %@", songLabel);
+            NSString *artistLabel = [tempArtistLabel stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+            HBLogInfo(@"The new song for searching lyrics is %@", artistLabel);
 
-        //final URL we will search with
-        NSString *searchURL = [[NSString alloc] init];
-        searchURL = [NSString stringWithFormat:@"https://www.google.ca/#q=%@+-+%@+lyrics", songLabel, artistLabel];
-        HBLogInfo(@"%@", searchURL);
+            //final URL we will search with
+            NSString *searchURL = [[NSString alloc] init];
+            searchURL = [NSString stringWithFormat:@"https://www.google.ca/#q=%@+-+%@+lyrics", songLabel, artistLabel];
+            HBLogInfo(@"%@", searchURL);
 
 
-        //Searching for the songs current lyrics
-        SFSafariViewController *sfVC = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:searchURL] entersReaderIfAvailable:NO];
-        [self presentViewController:sfVC animated:YES completion:nil];
+            //Searching for the songs current lyrics via Safari
+            SFSafariViewController *sfVC = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:searchURL] entersReaderIfAvailable:NO];
+            [self presentViewController:sfVC animated:YES completion:nil];
 
     });
 }
 %end
+
 
 
 static void loadPreferences() {
