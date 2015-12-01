@@ -9,6 +9,6 @@ include $(THEOS_MAKE_PATH)/tweak.mk
 GO_EASY_ON_ME=1
 
 after-install::
-	install.exec "killall -9 SpringBoard"
+	install.exec "killall -9 Music"
 SUBPROJECTS += trudeau
 include $(THEOS_MAKE_PATH)/aggregate.mk

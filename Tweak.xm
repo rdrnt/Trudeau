@@ -64,15 +64,12 @@ MPMusicPlayerController *playerC = [[[%c(MPMusicPlayerController) alloc] init] a
     %orig;
     HBLogInfo(@"MusicNowPlayingItemViewController loaded");
 
-    CGRect viewRect = [[self view] bounds];
-    CGFloat viewWidth = viewRect.size.width;
-    CGFloat viewHeight = viewRect.size.height;
-
     UIButton *lyricsButton = [UIButton buttonWithType:UIButtonTypeCustom];
+
     [lyricsButton addTarget:self action:@selector(openLyrics) forControlEvents:UIControlEventTouchUpInside];
     [lyricsButton setTitle:@"Lyrics" forState:UIControlStateNormal];
     CGSize sizeForButtonString = [@"Lyrics" sizeWithFont:lyricsButton.titleLabel.font]; 
-    [lyricsButton setFrame:CGRectMake(viewWidth/2,viewHeight/2, sizeForButtonString.width, sizeForButtonString.height)];
+    [lyricsButton setFrame:CGRectMake((self.view.frame.size.width - sizeForButtonString.width)/2, (self.view.frame.size.height - sizeForButtonString.height)/2, sizeForButtonString.width, sizeForButtonString.height)];
     [lyricsButton setTitleColor:[UIColor systemPinkColor] forState:UIControlStateNormal]; //systemPinkColor is the music tint color 
     [[self view] addSubview:lyricsButton];
 }
@@ -96,9 +93,8 @@ MPMusicPlayerController *playerC = [[[%c(MPMusicPlayerController) alloc] init] a
 
             //final URL we will search with
             NSString *searchURL = [[NSString alloc] init];
-            searchURL = [NSString stringWithFormat:@"https://www.google.ca/#q=%@+-+%@+lyrics", songLabel, artistLabel];
+            searchURL = [NSString stringWithFormat:@"https://www.google.com/#q=%@+-+%@+lyrics", songLabel, artistLabel]; //hail america
             HBLogInfo(@"%@", searchURL);
-
 
             //Searching for the songs current lyrics via Safari
             SFSafariViewController *sfVC = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:searchURL] entersReaderIfAvailable:NO];
