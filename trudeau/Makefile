@@ -3,7 +3,7 @@ include $(THEOS)/makefiles/common.mk
 BUNDLE_NAME = trudeau
 trudeau_FILES = trdRootListController.m
 trudeau_INSTALL_PATH = /Library/PreferenceBundles
-trudeau_FRAMEWORKS = UIKit
+trudeau_FRAMEWORKS = UIKit Social
 trudeau_PRIVATE_FRAMEWORKS = Preferences
 
 include $(THEOS_MAKE_PATH)/bundle.mk

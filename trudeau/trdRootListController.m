@@ -1,5 +1,6 @@
 #include "trdRootListController.h"
-#define iPad (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+#import <Social/SLComposeViewController.h>
+#import <Social/SLServiceTypes.h>
 
 @implementation trdRootListController
 
@@ -11,8 +12,49 @@
 	return _specifiers;
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
 
+    self.navigationController.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationController.navigationController.navigationBar.barTintColor = [UIColor systemPinkColor];
+    //self.navigationController.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
+    [UISwitch appearanceWhenContainedIn:self.class, nil].onTintColor = [UIColor systemPinkColor];
 
+    prevStatusStyle = [[UIApplication sharedApplication] statusBarStyle];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+
+    self.navigationController.navigationController.navigationBar.tintColor = nil;
+    self.navigationController.navigationController.navigationBar.barTintColor = nil;
+    self.navigationController.navigationController.navigationBar.titleTextAttributes = nil;
+    [[UIApplication sharedApplication] setStatusBarStyle:prevStatusStyle];
+}
+- (void)loadView {
+    [super loadView];
+    UIImage* image = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/trudeau.bundle/heart@2x.png"];
+    CGRect frame = CGRectMake(0, 0, image.size.width, image.size.height);
+    UIButton *button = [[UIButton alloc] initWithFrame:frame];
+    [button setBackgroundImage:image forState:UIControlStateNormal];
+        
+    [button addTarget:self action:@selector(tweet) forControlEvents:UIControlEventTouchUpInside];
+    [button setShowsTouchWhenHighlighted:YES];
+    UIBarButtonItem *heartButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+    //fix spacing
+    UIBarButtonItem *spaceCorrection = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    spaceCorrection.width = -16;
+    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:spaceCorrection, heartButton, nil] animated:NO];
+}
+
+-(void)tweet
+{
+    SLComposeViewController *composeController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+    [composeController setInitialText:@"Enhance your Music Experience with Trudeau by @_rdrnt and @xTM3x"];
+    
+    [self presentViewController:composeController animated:YES completion:nil];
+}
 @end
  
 @protocol PreferencesTableCustomView
@@ -43,7 +85,7 @@
         label.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:48];
         [label setText:@"Trudeau"];
         [label setBackgroundColor:[UIColor clearColor]];
-        label.textColor = [UIColor blackColor];
+        label.textColor = [UIColor colorWithRed:74/255.0f green:74/255.0f blue:74/255.0f alpha:1.0f];
         label.textAlignment = NSTextAlignmentCenter;
         
         subLabel = [[UILabel alloc] initWithFrame:underLabelFrame];
@@ -51,7 +93,7 @@
         subLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:14];
         [subLabel setText:@"Enhance your Music experience."];
         [subLabel setBackgroundColor:[UIColor clearColor]];
-        subLabel.textColor = [UIColor grayColor];
+        subLabel.textColor = [UIColor colorWithRed:74/255.0f green:74/255.0f blue:74/255.0f alpha:1.0f];
         subLabel.textAlignment = NSTextAlignmentCenter;
         
         [self addSubview:label];

@@ -4,12 +4,15 @@
 <dict>
 	<key>items</key>
 	<array>
-		<!--- Light Blur --->
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
-			<key>label</key>
-			<string>Light Blur</string>
+			<key>footerCellClass</key>
+			<string>TRDCustomHeaderView</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -19,16 +22,15 @@
 			<key>defaults</key>
 			<string>com.rdrnt.trudeau</string>
 			<key>key</key>
-			<string>Light Blur Enabled</string>
-			<key>PostNotification</key>
-			<string>com.rdrnt.trudeau/settingschanged/</string>
+			<string>enabled</string>
+			<key>label</key>
+			<string>Enabled</string>
 		</dict>
-		<!--- Something else! -->
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
-			<key>label</key>
-			<string>Dismiss</string>
+			<key>footerText</key>
+			<string>Adds album artwork blur to the miniplayer view.</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -38,12 +40,32 @@
 			<key>defaults</key>
 			<string>com.rdrnt.trudeau</string>
 			<key>key</key>
-			<string>Light Blur Enabled</string>
+			<string>blurEnabled</string>
+			<key>label</key>
+			<string>Blur Miniplayer Background</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>Inverts skipping gestures on the miniplayer.</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.rdrnt.trudeau</string>
+			<key>label</key>
+			<string>Invert Swipe Gestures</string>
+			<key>key</key>
+			<string>invertGestures</string>
 			<key>PostNotification</key>
 			<string>com.rdrnt.trudeau/settingschanged/</string>
 		</dict>
 	</array>
 	<key>title</key>
-	<string>trudeau</string>
+	<string></string>
 </dict>
 </plist>

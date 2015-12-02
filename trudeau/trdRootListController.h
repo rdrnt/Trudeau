@@ -1,5 +1,11 @@
 #import <Preferences/Preferences.h>
 
-@interface trdRootListController : PSListController
+@interface UIColor (DankMeme)
++(id)systemPinkColor;
+@end
+
+@interface trdRootListController : PSListController {
+	UIStatusBarStyle prevStatusStyle;
+}
 
 @end
