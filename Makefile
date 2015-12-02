@@ -7,6 +7,7 @@ Trudeau_PRIVATE_FRAMEWORKS  = MediaRemote SafariServices QuartzCore
 include $(THEOS_MAKE_PATH)/tweak.mk
 
 GO_EASY_ON_ME=1
+make DEBUG=0
 
 after-install::
 	install.exec "killall -9 SpringBoard"
