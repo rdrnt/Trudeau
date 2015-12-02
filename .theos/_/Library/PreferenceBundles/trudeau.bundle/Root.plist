@@ -42,9 +42,9 @@
 			<key>defaults</key>
 			<string>com.tweakbattles.trudeau</string>
 			<key>key</key>
-			<string>blurEnabled</string>
+			<string>lyricsButton</string>
 			<key>label</key>
-			<string>Blur Miniplayer Background</string>
+			<string>Show Lyrics Button</string>
 			<key>PostNotification</key>
 			<string>com.tweakbattles.trudeau/settingschanged</string>
 		</dict>
@@ -67,6 +67,10 @@
 			<string>invertGestures</string>
 			<key>PostNotification</key>
 			<string>com.tweakbattles.trudeau/settingschanged</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
 		</dict>
 	</array>
 	<key>title</key>

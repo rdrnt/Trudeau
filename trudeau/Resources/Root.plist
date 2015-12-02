@@ -72,16 +72,6 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 		</dict>
-		<dict>
-			<key>isController</key>
-			<true/>
-			<key>cell</key>
-			<string>PSLinkCell</string>
-			<key>label</key>
-			<string>Makers</string>
-			<key>detail</key>
-			<string>TRDMakersListController</string>
-		</dict>
 	</array>
 	<key>title</key>
 	<string></string>

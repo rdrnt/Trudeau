@@ -94,13 +94,13 @@ MPMusicPlayerController *playerC = [[[%c(MPMusicPlayerController) alloc] init] a
 
 
     UIImage* image = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/trudeau.bundle/lyrics.png"];
-    CGRect frame = CGRectMake((self.view.frame.size.width - image.size.width)/2, (self.view.frame.size.height - image.size.height)/2, image.size.width + 2, image.size.height + 2);
+    CGRect frame = CGRectMake((self.view.frame.size.width - image.size.width)/2, (self.view.frame.size.height - image.size.height)/2 + 25, image.size.width + 2, image.size.height + 2);
     UIButton *lyricsButton = [[UIButton alloc] initWithFrame:frame];
     [lyricsButton setBackgroundImage:image forState:UIControlStateNormal];
         
     [lyricsButton addTarget:self action:@selector(openLyrics) forControlEvents:UIControlEventTouchUpInside];
 
-    lyricsButton.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.7];
+    lyricsButton.backgroundColor = [UIColor clearColor];
     lyricsButton.layer.cornerRadius = 5;
     lyricsButton.layer.masksToBounds = YES;
     [[self view] addSubview:lyricsButton];

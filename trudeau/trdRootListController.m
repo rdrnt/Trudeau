@@ -64,9 +64,7 @@ void killMusic(CFNotificationCenterRef center, void *observer, CFStringRef name,
 }
 @end
 
-@implementation TRDMakersListController
 
-@end
 
 @protocol PreferencesTableCustomView
 - (id)initWithSpecifier:(id)arg1;

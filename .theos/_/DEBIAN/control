@@ -5,5 +5,5 @@ Architecture: iphoneos-arm
 Description: Enhance your Music experience.
 Author: rdrnt & xTM3x
 Section: Tweaks
-Version: 1.0-11+debug
-Installed-Size: 1648
+Version: 1.0-12+debug
+Installed-Size: 1664
