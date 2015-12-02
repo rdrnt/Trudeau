@@ -1,10 +1,9 @@
-Package: rdrnt
+Package: com.tweakbattles.trudeau
 Name: Trudeau
 Depends: mobilesubstrate
 Architecture: iphoneos-arm
-Description: An awesome MobileSubstrate tweak!
-Maintainer: rdrnt
-Author: rdrnt
+Description: Enhance your Music experience.
+Author: rdrnt & xTM3x
 Section: Tweaks
-Version: 0.0.1-106+debug
-Installed-Size: 252
+Version: 1.0-11+debug
+Installed-Size: 1648

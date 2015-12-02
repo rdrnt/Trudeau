@@ -12,21 +12,28 @@
 	return _specifiers;
 }
 
+void killMusic(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    system("killall -9 Music");
+    #pragma clang diagnostic pop
+}
+
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
 
     self.navigationController.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationController.navigationBar.barTintColor = [UIColor systemPinkColor];
-    //self.navigationController.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
     [UISwitch appearanceWhenContainedIn:self.class, nil].onTintColor = [UIColor systemPinkColor];
 
     prevStatusStyle = [[UIApplication sharedApplication] statusBarStyle];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, &killMusic, CFSTR("com.tweakbattles.trudeau/settingschanged"), NULL, 0);
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-
+    CFNotificationCenterRemoveObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, CFSTR("com.tweakbattles.trudeau/settingschanged"), NULL);
     self.navigationController.navigationController.navigationBar.tintColor = nil;
     self.navigationController.navigationController.navigationBar.barTintColor = nil;
     self.navigationController.navigationController.navigationBar.titleTextAttributes = nil;
@@ -40,7 +47,7 @@
     [button setBackgroundImage:image forState:UIControlStateNormal];
         
     [button addTarget:self action:@selector(tweet) forControlEvents:UIControlEventTouchUpInside];
-    [button setShowsTouchWhenHighlighted:YES];
+    [button setShowsTouchWhenHighlighted:NO];
     UIBarButtonItem *heartButton = [[UIBarButtonItem alloc] initWithCustomView:button];
     //fix spacing
     UIBarButtonItem *spaceCorrection = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -56,7 +63,11 @@
     [self presentViewController:composeController animated:YES completion:nil];
 }
 @end
- 
+
+@implementation TRDMakersListController
+
+@end
+
 @protocol PreferencesTableCustomView
 - (id)initWithSpecifier:(id)arg1;
 

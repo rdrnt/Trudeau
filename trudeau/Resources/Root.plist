@@ -20,11 +20,13 @@
 			<key>default</key>
 			<true/>
 			<key>defaults</key>
-			<string>com.rdrnt.trudeau</string>
+			<string>com.tweakbattles.trudeau</string>
 			<key>key</key>
 			<string>enabled</string>
 			<key>label</key>
 			<string>Enabled</string>
+			<key>PostNotification</key>
+			<string>com.tweakbattles.trudeau/settingschanged</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -38,11 +40,13 @@
 			<key>default</key>
 			<true/>
 			<key>defaults</key>
-			<string>com.rdrnt.trudeau</string>
+			<string>com.tweakbattles.trudeau</string>
 			<key>key</key>
-			<string>blurEnabled</string>
+			<string>lyricsButton</string>
 			<key>label</key>
-			<string>Blur Miniplayer Background</string>
+			<string>Show Lyrics Button</string>
+			<key>PostNotification</key>
+			<string>com.tweakbattles.trudeau/settingschanged</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -56,13 +60,27 @@
 			<key>default</key>
 			<false/>
 			<key>defaults</key>
-			<string>com.rdrnt.trudeau</string>
+			<string>com.tweakbattles.trudeau</string>
 			<key>label</key>
 			<string>Invert Swipe Gestures</string>
 			<key>key</key>
 			<string>invertGestures</string>
 			<key>PostNotification</key>
-			<string>com.rdrnt.trudeau/settingschanged/</string>
+			<string>com.tweakbattles.trudeau/settingschanged</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+		</dict>
+		<dict>
+			<key>isController</key>
+			<true/>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>label</key>
+			<string>Makers</string>
+			<key>detail</key>
+			<string>TRDMakersListController</string>
 		</dict>
 	</array>
 	<key>title</key>

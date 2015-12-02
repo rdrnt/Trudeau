@@ -3,8 +3,24 @@
 #import <SpringBoard/SpringBoard.h>
 #import "MediaRemote.h"
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 #import <SafariServices/SafariServices.h>
 #import "trudeau.h"
+
+static BOOL enabled;
+static BOOL blurEnabled;
+static BOOL invertGestures;
+
+static NSString *const TRDPrefsPath = @"/var/mobile/Library/Preferences/com.tweakbattles.trudeau.plist";
+static void loadPreferences() {
+    NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:TRDPrefsPath];
+
+    enabled         = [dict objectForKey:@"enabled"] ? [[dict objectForKey:@"enabled"] boolValue] : TRUE;
+    blurEnabled     = [dict objectForKey:@"blurEnabled"] ? [[dict objectForKey:@"blurEnabled"] boolValue] : TRUE;
+    invertGestures  = [[dict objectForKey:@"invertGestures"] boolValue];
+
+    [dict release];
+}
 
 @interface UIColor (Priv)
 +(UIColor *)systemPinkColor;
@@ -27,15 +43,27 @@ MPMusicPlayerController *playerC = [[[%c(MPMusicPlayerController) alloc] init] a
     %orig;
 
     //Add Swipes to the view
-    swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextTrack)];
-    swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
-    swipeLeft.numberOfTouchesRequired = 1;
-    [[self view] addGestureRecognizer:swipeLeft];
+    if (enabled) {
+        swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextTrack)];
+        if (invertGestures) {
+            swipeLeft.direction = UISwipeGestureRecognizerDirectionRight;
+        }
+        else {
+            swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
+        }
+        swipeLeft.numberOfTouchesRequired = 1;
+        [[self view] addGestureRecognizer:swipeLeft];
 
-    swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(previousTrack)];
-    swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
-    swipeRight.numberOfTouchesRequired = 1;
-    [[self view] addGestureRecognizer:swipeRight];
+        swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(previousTrack)];
+        if (invertGestures) {
+            swipeRight.direction = UISwipeGestureRecognizerDirectionLeft;
+        }
+        else {
+            swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
+        }
+        swipeRight.numberOfTouchesRequired = 1;
+        [[self view] addGestureRecognizer:swipeRight];
+    }
 }
 
 %new
@@ -64,13 +92,17 @@ MPMusicPlayerController *playerC = [[[%c(MPMusicPlayerController) alloc] init] a
     %orig;
     HBLogInfo(@"MusicNowPlayingItemViewController loaded");
 
-    UIButton *lyricsButton = [UIButton buttonWithType:UIButtonTypeCustom];
 
+    UIImage* image = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/trudeau.bundle/lyrics.png"];
+    CGRect frame = CGRectMake((self.view.frame.size.width - image.size.width)/2, (self.view.frame.size.height - image.size.height)/2, image.size.width + 2, image.size.height + 2);
+    UIButton *lyricsButton = [[UIButton alloc] initWithFrame:frame];
+    [lyricsButton setBackgroundImage:image forState:UIControlStateNormal];
+        
     [lyricsButton addTarget:self action:@selector(openLyrics) forControlEvents:UIControlEventTouchUpInside];
-    [lyricsButton setTitle:@"Lyrics" forState:UIControlStateNormal];
-    CGSize sizeForButtonString = [@"Lyrics" sizeWithFont:lyricsButton.titleLabel.font]; 
-    [lyricsButton setFrame:CGRectMake((self.view.frame.size.width - sizeForButtonString.width)/2, (self.view.frame.size.height - sizeForButtonString.height)/2, sizeForButtonString.width, sizeForButtonString.height)];
-    [lyricsButton setTitleColor:[UIColor systemPinkColor] forState:UIControlStateNormal]; //systemPinkColor is the music tint color 
+
+    lyricsButton.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.7];
+    lyricsButton.layer.cornerRadius = 5;
+    lyricsButton.layer.masksToBounds = YES;
     [[self view] addSubview:lyricsButton];
 }
 
@@ -104,18 +136,6 @@ MPMusicPlayerController *playerC = [[[%c(MPMusicPlayerController) alloc] init] a
 }
 %end
 
-
-
-static void loadPreferences() {
-    lightblur= !CFPreferencesCopyAppValue(CFSTR("lightblur"), CFSTR("com.rdrnt.trudeau")) ? YES : [(id)CFPreferencesCopyAppValue(CFSTR("lightblur"), CFSTR("com.rdrnt.trudeau")) boolValue];
-}
-
 %ctor {
-    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
-                                NULL,
-                                (CFNotificationCallback)loadPreferences,
-                                CFSTR("com.rdrnt.trudeau/settingschanged"),
-                                NULL,
-                                CFNotificationSuspensionBehaviorDeliverImmediately);
     loadPreferences();
 }
