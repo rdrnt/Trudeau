@@ -1,9 +1,8 @@
-Package: rdrnt
+Package: com.wiley.trudeau
 Name: Trudeau
-Depends: mobilesubstrate
-Version: 0.0.1
+Depends: mobilesubstrate preferenceloader
+Version: 1.0
 Architecture: iphoneos-arm
-Description: An awesome MobileSubstrate tweak!
-Maintainer: rdrnt
-Author: rdrnt
+Description: Enhance your Music experience.
+Author: rdrnt + xTM3x
 Section: Tweaks
