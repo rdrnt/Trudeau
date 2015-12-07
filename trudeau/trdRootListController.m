@@ -77,19 +77,22 @@ void killMusic(CFNotificationCenterRef center, void *observer, CFStringRef name,
 @interface TRDCustomHeaderView : UITableViewCell <PreferencesTableCustomView> {
     UILabel *label;
     UILabel *subLabel;
+    UILabel *sekret;
 }
 @end
 
 @implementation TRDCustomHeaderView
 - (id)initWithSpecifier:(PSSpecifier *)specifier
 {
+    NSArray *sekretArray = @[@"Nice Meme!", @"How did I get up here?", @"JOHHHNNNN CENA!!!", @"Help Me!", @"I'm Trapped!", @"Screw Gravity!"];
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
     if (self) {
         int width = [[UIScreen mainScreen] bounds].size.width;
-        CGRect labelFrame = CGRectMake(0, -15, width, 60);
-        CGRect underLabelFrame = CGRectMake(0, 20, width, 60);
+        CGRect sekretRect = CGRectMake(0,-200, width, 60);
+        CGRect labelRect = CGRectMake(0, -15, width, 60);
+        CGRect subLabelRect = CGRectMake(0, 20, width, 60);
         
-        label = [[UILabel alloc] initWithFrame:labelFrame];
+        label = [[UILabel alloc] initWithFrame:labelRect];
         [label setNumberOfLines:1];
         label.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:48];
         [label setText:@"Trudeau"];
@@ -97,16 +100,25 @@ void killMusic(CFNotificationCenterRef center, void *observer, CFStringRef name,
         label.textColor = [UIColor colorWithRed:74/255.0f green:74/255.0f blue:74/255.0f alpha:1.0f];
         label.textAlignment = NSTextAlignmentCenter;
         
-        subLabel = [[UILabel alloc] initWithFrame:underLabelFrame];
+        subLabel = [[UILabel alloc] initWithFrame:subLabelRect];
         [subLabel setNumberOfLines:1];
         subLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:14];
         [subLabel setText:@"Enhance your Music experience."];
         [subLabel setBackgroundColor:[UIColor clearColor]];
         subLabel.textColor = [UIColor colorWithRed:74/255.0f green:74/255.0f blue:74/255.0f alpha:1.0f];
         subLabel.textAlignment = NSTextAlignmentCenter;
+
+        sekret = [[UILabel alloc] initWithFrame:sekretRect];
+        [sekret setNumberOfLines:1];
+        sekret.font = [UIFont fontWithName:@"HelveticaNeue" size:14];
+        [sekret setText:[sekretArray objectAtIndex:(arc4random() % [sekretArray count])]];
+        [sekret setBackgroundColor:[UIColor clearColor]];
+        sekret.textColor = [UIColor grayColor];
+        sekret.textAlignment = NSTextAlignmentCenter;
         
         [self addSubview:label];
         [self addSubview:subLabel];
+        [self addSubview:sekret];
         
     }
     return self;
