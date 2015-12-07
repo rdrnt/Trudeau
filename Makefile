@@ -10,6 +10,7 @@ GO_EASY_ON_ME=1
 make DEBUG=0
 
 after-install::
-	install.exec "killall -9 SpringBoard"
+	install.exec "killall -9 Music"
+	install.exec "killall -9 Preferences"
 SUBPROJECTS += trudeau
 include $(THEOS_MAKE_PATH)/aggregate.mk

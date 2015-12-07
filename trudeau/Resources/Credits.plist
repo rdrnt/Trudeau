@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>items</key>
+	<array>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSG</string>
+			<key>height</key>
+			<integer>100</integer>
+			<key>cellClass</key>
+			<string>TRDDevCell</string>
+			<key>profileImage</key>
+			<string>riley</string>
+			<key>name</key>
+			<string>Riley</string>
+			<key>handle</key>
+			<string>@_rdrnt</string>
+			<key>job</key>
+			<string>Developer</string>
+			<key>action</key>
+			<string>rileyTwitter</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSG</string>
+			<key>height</key>
+			<integer>100</integer>
+			<key>cellClass</key>
+			<string>TRDDevCell</string>
+			<key>profileImage</key>
+			<string>wilson</string>
+			<key>name</key>
+			<string>Williamson</string>
+			<key>handle</key>
+			<string>@xTM3x</string>
+			<key>job</key>
+			<string>Developer</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>Huge thanks to for supporting Tweak Battles:
+
+Eric
+Borsato92
+cj81499
+winlogon0
+mootjeuh
+@redzrex
+Jason R.
+CONATH
+JimDotR
+Boris S
+Ziph0n
+Andrew
+/u/DervishSkater
+Corporal
+Acidschnee
+Josh Gibson
+HHumbert
+Cody
+Connor
+@sel2by3
+Shadow Games
+Pixxaddict
+platypusw90
+echo000
+Jonathan Gautreau
+Blink
+ShaneSparkyYYZ
+kamikasky
+MaxD
+@tilgut
+@Beezure
+Matteo Piccina
+josh_boothman
+Moshe Siegel
+Ian L
+Torben
+MeatyCheetos
+@rauseo12
+Lei33
+K S LEE
+@RichResk
+wizage
+@sekrit_
+RushNY
+Maortega89
+@frkbmb_
+Kyle
+Robert
+@BrianOverly
+@thetomcanuck
+OhSpazz
+Jessyreynosa3
+Jessie mejia
+Jp_delon
+dantesieg
+
+You guys are awesome!</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSG</string>
+			<key>height</key>
+			<integer>100</integer>
+			<key>cellClass</key>
+			<string>TRDDevCell</string>
+			<key>profileImage</key>
+			<string>battles</string>
+			<key>name</key>
+			<string>Tweak Battles</string>
+			<key>handle</key>
+			<string>@TweakBattles</string>
+			<key>job</key>
+			<string>Support Charity. Get Tweaks.</string>
+		</dict>
+	</array>
+	<key>title</key>
+	<string>Credits</string>
+</dict>
+</plist>

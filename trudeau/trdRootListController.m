@@ -6,9 +6,10 @@
 
 - (NSArray *)specifiers {
 	if (!_specifiers) {
-		_specifiers = [[self loadSpecifiersFromPlistName:@"Root" target:self] retain];
+		_specifiers = [[self loadSpecifiersFromPlistName:@"Meme" target:self] retain];
 	}
 
+    [_specifiers retain];
 	return _specifiers;
 }
 
