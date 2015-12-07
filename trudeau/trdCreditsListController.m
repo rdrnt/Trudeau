@@ -93,7 +93,7 @@
 }
 
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier specifier:(PSSpecifier *)spec {
-    UIImage *profileImage = [[UIImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"/Library/PreferenceBundles/trudeau.bundle/%@.png", [spec propertyForKey:@"imageName"]]];
+    UIImage *profileImage = [[UIImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"/Library/PreferenceBundles/trudeau.bundle/%@.png", [spec propertyForKey:@"profileImage"]]];
     self = [self initWithName:[spec propertyForKey:@"name"] twitterHandle:[spec propertyForKey:@"handle"] job:[spec propertyForKey:@"job"] profileImage:profileImage];
     return self;
 }
