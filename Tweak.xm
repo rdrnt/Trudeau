@@ -41,6 +41,33 @@ MPMusicPlayerController *playerC = [[[%c(MPMusicPlayerController) alloc] init] a
 -(void)previousTrack;
 @end
 
+@interface MusicMiniPlayerBackgroundView : UIView
+@end
+
+@interface _UIBackdropView : UIView
+-(id)initWithStyle:(int)style;
+@end
+
+%hook MusicMiniPlayerBackgroundView
+-(void)layoutSubviews {
+    %orig;
+    MRMediaRemoteGetNowPlayingInfo(dispatch_get_main_queue(), ^(CFDictionaryRef information) {
+        NSDictionary *dict=(__bridge NSDictionary *)(information);
+        NSData *artworkData = [dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoArtworkData];
+        UIImage *artwork = [UIImage imageWithData:artworkData];
+        UIImageView *artworkView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,self.frame.size.width,artwork.size.height)];
+        artworkView.image = artwork;
+        [self addSubview:artworkView];
+
+        _UIBackdropView *blurView = [[_UIBackdropView alloc] initWithStyle:2060];
+        [artworkView addSubview:blurView];
+
+        [blurView release];
+        [artworkView release];
+    });
+}
+%end
+
 //Hooking the mini player bar in music.app
 %hook MusicMiniPlayerViewController
 - (void)viewDidLoad {
