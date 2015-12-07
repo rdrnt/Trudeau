@@ -1,12 +1,24 @@
-    UISwipeGestureRecognizer *swipeLeft;
-    UISwipeGestureRecognizer *swipeRight;
-   
+#import <UIKit/UIKit.h>
+#import <SafariServices/SafariServices.h>
+#import <MediaPlayer/MPMusicPlayerController.h>
+#import "MediaRemote.h"
 
-   //Lyrics button
-    UIButton *lyricsButton;
+@interface UIColor (Priv)
++(UIColor *)systemPinkColor;
+@end
 
-    //blur
-    UIVisualEffectView *effectView;
+@interface _UIBackdropView : UIView
+-(id)initWithStyle:(int)style;
+@end
 
-    //other shiz
-    static bool lightblur;
+@interface MusicNowPlayingItemViewController : UIViewController 
+
+@end
+
+@interface MusicMiniPlayerViewController : UIViewController
+
+@end
+
+@interface MusicMiniPlayerBackgroundView : UIView
+
+@end
