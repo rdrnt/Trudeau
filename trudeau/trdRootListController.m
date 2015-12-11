@@ -85,7 +85,7 @@ void killMusic(CFNotificationCenterRef center, void *observer, CFStringRef name,
 @implementation TRDCustomHeaderView
 - (id)initWithSpecifier:(PSSpecifier *)specifier
 {
-    NSArray *sekretArray = @[@"Nice Meme!", @"How did I get up here?", @"JOHHHNNNN CENA!!!", @"Help Me!", @"I'm Trapped!", @"Screw Gravity!"];
+    NSArray *sekretArray = @[@"Not your Mother's Javascript!", @"YAML Ain't Markup Language!", @"wen rls?", @"On a scale of 1 to Dank...", @"umop-apisdn!", @"Water proof!", @"sqrt(-1) love you!", @"Nice Meme!", @"How did I get up here?", @"JOHHHNNNN CENA!!!", @"Help Me!", @"I'm Trapped!", @"Screw Gravity!"];
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
     if (self) {
         int width = [[UIScreen mainScreen] bounds].size.width;

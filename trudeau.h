@@ -22,3 +22,7 @@
 @interface MusicMiniPlayerBackgroundView : UIView
 
 @end
+
+@interface MPUSystemMediaControlsViewController : UIViewController
+-(id)artworkView;
+@end

@@ -5,7 +5,7 @@ Eric, Borsato92, cj81499, winlogon0, mootjeuh, @redzrex, Jason R., CONATH, JimDo
 */
 
 static BOOL enabled;
-static BOOL blurEnabled;
+// static BOOL blurEnabled;
 static BOOL invertGestures;
 
 static NSString *const TRDPrefsPath = @"/var/mobile/Library/Preferences/com.tweakbattles.trudeau.plist";
@@ -13,35 +13,13 @@ static void loadPreferences() {
     NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:TRDPrefsPath];
 
     enabled         = [dict objectForKey:@"enabled"] ? [[dict objectForKey:@"enabled"] boolValue] : TRUE;
-    blurEnabled     = [dict objectForKey:@"blurEnabled"] ? [[dict objectForKey:@"blurEnabled"] boolValue] : TRUE;
+    //blurEnabled     = [dict objectForKey:@"blurEnabled"] ? [[dict objectForKey:@"blurEnabled"] boolValue] : TRUE;
     invertGestures  = [[dict objectForKey:@"invertGestures"] boolValue];
 
     [dict release];
 }
 
 static MPMusicPlayerController *playerC = [[[%c(MPMusicPlayerController) alloc] init] autorelease];
-
-//Album artwork blur across the Music UI
-%hook MusicMiniPlayerBackgroundView
--(void)layoutSubviews {
-    %orig;
-
-    MRMediaRemoteGetNowPlayingInfo(dispatch_get_main_queue(), ^(CFDictionaryRef information) {
-        NSDictionary *dict=(__bridge NSDictionary *)(information);
-        NSData *artworkData = [dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoArtworkData];
-        UIImage *artwork = [UIImage imageWithData:artworkData];
-        UIImageView *artworkView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,self.frame.size.width,artwork.size.height)];
-        artworkView.image = artwork;
-        [self addSubview:artworkView];
-
-        _UIBackdropView *blurView = [[_UIBackdropView alloc] initWithStyle:2060];
-        [artworkView addSubview:blurView];
-
-        [blurView release];
-        [artworkView release];
-    });
-}
-%end
 
 //Hooking the mini player bar in music.app
 %hook MusicMiniPlayerViewController
@@ -71,6 +49,27 @@ static MPMusicPlayerController *playerC = [[[%c(MPMusicPlayerController) alloc] 
         swipeRight.numberOfTouchesRequired = 1;
         [[self view] addGestureRecognizer:swipeRight];
     }
+
+    // MusicMiniPlayerBackgroundView* backgroundView = MSHookIvar<MusicMiniPlayerBackgroundView*>(self, "_backgroundView");
+    // MRMediaRemoteGetNowPlayingInfo(dispatch_get_main_queue(), ^(CFDictionaryRef information) {
+	  	// HBLogDebug(@"Getting Album artwork (supposedly)")
+	  	// while (true) {
+	  	// 	NSDictionary *dict=(__bridge NSDictionary *)(information);
+	  	// 	if (dict) {
+	  	// 		break;
+	  	// 	}
+	  	// }
+	   //  NSDictionary *dict=(__bridge NSDictionary *)(information);
+	   //  HBLogDebug(@"dict - %@", dict);
+	   //  NSData *artworkData = [dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoArtworkData];
+ 	  //   UIImage *artwork = [UIImage imageWithData:artworkData];
+	   //  UIImageView *artworkView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,backgroundView.frame.size.width,artwork.size.height)];
+	   //  artworkView.image = artwork;
+
+	   //  _UIBackdropView *blurView = [[_UIBackdropView alloc] initWithStyle:2060];
+	   //  [artworkView addSubview:blurView];
+	   //  [backgroundView addSubview:artworkView];
+    // });
 }
 
 %new
@@ -109,18 +108,14 @@ static MPMusicPlayerController *playerC = [[[%c(MPMusicPlayerController) alloc] 
         NSDictionary *dict=(__bridge NSDictionary *)(information);
         NSString *tempSongLabel = [[NSString alloc] initWithString:[dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoTitle] ];
         NSString *tempArtistLabel = [[NSString alloc] initWithString:[dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoArtist] ];
-        HBLogInfo(@"The song is %@ by %@", tempSongLabel, tempArtistLabel);
 
         //Replacing " " in songs and artist, so we can google search properly
         NSString *songLabel = [tempSongLabel stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-        HBLogInfo(@"The new song for searching lyrics is %@", songLabel);
         NSString *artistLabel = [tempArtistLabel stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-        HBLogInfo(@"The new song for searching lyrics is %@", artistLabel);
 
         //final URL we will search with
         NSString *searchURL = [[NSString alloc] init];
         searchURL = [NSString stringWithFormat:@"https://www.google.com/#q=%@+-+%@+lyrics", songLabel, artistLabel]; //hail america
-        HBLogInfo(@"%@", searchURL);
 
         //Searching for the songs current lyrics via Safari
         SFSafariViewController *sfVC = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:searchURL] entersReaderIfAvailable:NO];

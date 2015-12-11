@@ -1,7 +1,7 @@
 Package: com.tweakbattles.trudeau
 Name: Trudeau
 Depends: mobilesubstrate
-Version: 1.0
+Version: 1.0.1
 Architecture: iphoneos-arm
 Description: Enhance your Music experience.
 Author: rdrnt & xTM3x
