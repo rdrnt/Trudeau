@@ -13,7 +13,7 @@ Tweak battles tweak made by rdrnt & xTM3X
 
 ![Screenshot](http://i.imgur.com/adjrSKb.png)
 <br>
-![Screenshot](http://i.imgur.com/hvZ6H0c.png))
+![Screenshot](http://i.imgur.com/2pqLVsc.png)
 
 
 
