@@ -6,6 +6,7 @@ Tweak battles tweak made by rdrnt & xTM3x
 - Adds swipe gestures to the now playing minibar to easily switch between songs
 
 #Future Features
+- Blurred Album Artwork UI
  Please send us an email through Cydia or tweet at us for stuff you would like added.
 
 #Contribute
