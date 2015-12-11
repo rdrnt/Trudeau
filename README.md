@@ -1,5 +1,5 @@
 # Trudeau
-Tweak battles tweak made by rdrnt & xTM3X
+Tweak battles tweak made by rdrnt & xTM3x
 
 #What is Trudeau?
 - Makes it easy to search for the Now Playing song lyrics 
